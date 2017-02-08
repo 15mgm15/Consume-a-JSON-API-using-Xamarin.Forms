@@ -13,11 +13,16 @@ namespace SayUSDollar.ViewModel
 		public CurrencyListViewModel()
 		{
 			_currencyList = new List<Currency>();
+
 			//Since we are going to do UI changes we should do it on the UI Thread!
 			Device.BeginInvokeOnMainThread(async () =>
 			{
-				await PopulateList();	
+				CurrencyList = await PopulateList();	
 			});
+			//Task.Run(async () =>
+			//{
+			//	await PopulateList();
+			//});
 		}
 
 		#region Properties
@@ -50,28 +55,12 @@ namespace SayUSDollar.ViewModel
 
 		#region Methods
 
-		async Task PopulateList()
+		async Task<List<Currency>> PopulateList()
 		{
 			IsBusy = true;
-			var rootObject = await WebApi.Instance.GetCurrenciesAsync();
-
-			if (rootObject == null)
-			{
-				IsBusy = false;
-				return;
-			}
-
-			foreach (var currency in rootObject.rates)
-			{
-				_currencyList.Add(new Currency
-				{
-					Name = currency.Key,
-					Rate = currency.Value
-				});
-			}
-
-			CurrencyList = _currencyList;
+			_currencyList = await WebApi.Instance.GetCurrenciesAsync();
 			IsBusy = false;
+			return _currencyList;
 		}
 
 		#endregion

@@ -27,9 +27,9 @@ namespace SayUSDollar
 			return httpCLient;
 		}
 
-		public async Task<RootObject> GetCurrenciesAsync()
+		public async Task<List<Currency>> GetCurrenciesAsync()
 		{
-			var rootObject = new RootObject();
+			var currencyList = new List<Currency>();
 			try
 			{
 				//TODO: Check network connection
@@ -41,7 +41,16 @@ namespace SayUSDollar
 					var result = await httpClient.GetAsync(url);
 					var responseText = await result.Content.ReadAsStringAsync();
 					//Serialize the json object to our c# classes
-					rootObject = JsonConvert.DeserializeObject<RootObject>(responseText);
+					var rootObject = JsonConvert.DeserializeObject<RootObject>(responseText);
+
+					foreach (var currency in rootObject.rates)
+					{
+						currencyList.Add(new Currency
+						{
+							Name = currency.Key,
+							Rate = currency.Value
+						});
+					}
 				}
 				//}
 			}
@@ -50,7 +59,7 @@ namespace SayUSDollar
 				//In case something we have a problem...
 				Console.WriteLine("Whooops! " + ex.Message);
 			}
-			return rootObject;
+			return currencyList;
 		}
 	}
 }
