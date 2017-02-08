@@ -19,10 +19,6 @@ namespace SayUSDollar.ViewModel
 			{
 				CurrencyList = await PopulateList();	
 			});
-			//Task.Run(async () =>
-			//{
-			//	await PopulateList();
-			//});
 		}
 
 		#region Properties
