@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using SQLite.Net.Interop;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -6,8 +7,9 @@ namespace SayUSDollar
 {
 	public partial class App : Application
 	{
-		public App()
+		public App(ISQLitePlatform platform)
 		{
+			DataLayer.Instance.SetDataBasePlatform(platform);
 			InitializeComponent();
 
 			MainPage = new NavigationPage(new SayUSDollarPage());

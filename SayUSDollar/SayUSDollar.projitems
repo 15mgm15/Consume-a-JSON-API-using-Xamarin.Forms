@@ -22,6 +22,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\WebApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\RootObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModel\CurrencyListViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\Database.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\DataLayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\BaseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Model\" />

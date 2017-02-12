@@ -14,7 +14,7 @@ namespace SayUSDollar.iOS
 		{
 			global::Xamarin.Forms.Forms.Init();
 
-			LoadApplication(new App());
+			LoadApplication(new App(new SQLite.Net.Platform.XamarinIOS.SQLitePlatformIOS()));
 
 			return base.FinishedLaunching(app, options);
 		}
