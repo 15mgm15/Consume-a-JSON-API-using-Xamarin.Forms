@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SQLiteNetExtensions.Attributes;
 
 namespace SayUSDollar.Model
 {
@@ -9,7 +10,7 @@ namespace SayUSDollar.Model
 		public double Rate { get; set; }
 	}
 
-	public class RootObject : BaseModel
+	public class RootObject
 	{
 		public string @base { get; set; }
 		public string date { get; set; }

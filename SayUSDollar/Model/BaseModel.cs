@@ -7,12 +7,12 @@ namespace SayUSDollar
 	public class BaseModel
 	{
 		[PrimaryKey, AutoIncrement, JsonIgnore]
-		public int SqlId { get; set; }
+		public int Id { get; set; }
 
 		[Default(true), JsonIgnore]
-		public DateTime Creation { get; set; } = DateTime.UtcNow;
+		public DateTime Created { get; set; } = DateTime.UtcNow;
 
 		[Default(true), JsonIgnore]
-		public DateTime LastUpdate { get; set; } = DateTime.UtcNow;
+		public DateTime Updated { get; set; } = DateTime.UtcNow;
 	}
 }

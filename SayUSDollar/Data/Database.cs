@@ -44,8 +44,6 @@ namespace SayUSDollar
 			                                  SQLiteOpenFlags.Create | 
 			                                  SQLiteOpenFlags.FullMutex, true);
 
-			//Create our tables
-			Connection.CreateTable<RootObject>();
 			Connection.CreateTable<Currency>();
 
 		}
@@ -71,23 +69,22 @@ namespace SayUSDollar
 					}
 					Connection.Commit();
 				}
-				catch
+				catch(Exception ex)
 				{
+					Console.WriteLine("Whooops! " + ex.Message);
 					Connection.Rollback();
 				}
 			}
 		}
 
 		/// <summary>
-		/// Save or replace the object and its children.
+		/// Inserts or replace the object from the local database with its children.
 		/// </summary>
-		/// <param name="collection"> Objecto to replace</param>
-		public void SetObjectWithChildrenReplace(object collection)
+		/// <param name="collection"> Object to replace</param>
+		public void InsertOrReplaceWithChildren(object collection)
 		{
-
 			Connection.InsertOrReplaceWithChildren(collection, true);
 		}
-
 
 		/// <summary>
 		/// Delete object and its children.
@@ -116,7 +113,7 @@ namespace SayUSDollar
 		}
 
 		/// <summary>
-		/// Insert only the object that was sent.
+		/// Insert an object to the database.
 		/// </summary>
 		/// <typeparam name="T"></typeparam>
 		/// <param name="entity">T object to insert</param>
@@ -126,13 +123,12 @@ namespace SayUSDollar
 		}
 
 		/// <summary>
-		/// Get the object T with its children
+		/// Get the IQueryable object T with its children
 		/// </summary>
 		/// <typeparam name="T">Object to get</typeparam>
 		/// <returns></returns>
 		public IQueryable<T> Fetch<T>() where T : BaseModel
 		{
-			//Always it will return current data user.
 			return Connection.GetAllWithChildren<T>(recursive: true).AsQueryable();
 		}
 
@@ -156,7 +152,12 @@ namespace SayUSDollar
 		{
 			return Connection.Table<T>()
 				.AsQueryable()
-				.FirstOrDefault(e => e.SqlId == id);
+				.FirstOrDefault(e => e.Id == id);
+		}
+
+		public void TruncateTable<T>() where T : BaseModel
+		{
+			Connection.DeleteAll<T>();
 		}
 
 		#endregion

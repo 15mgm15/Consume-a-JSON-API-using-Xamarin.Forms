@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ModernHttpClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Plugin.Connectivity;
 using SayUSDollar.Model;
 
 namespace SayUSDollar
@@ -29,37 +30,52 @@ namespace SayUSDollar
 
 		public async Task<List<Currency>> GetCurrenciesAsync()
 		{
-			var currencyList = new List<Currency>();
+			var currenciesList = new List<Currency>();
 			try
 			{
 				//TODO: Check network connection
-				//if (await CheckNetworkConnection())
-				//{
-				var url = _baseUrl + "latest?base=USD";
-				using (var httpClient = CreateClient())
+				if (await CheckNetworkConnection())
 				{
-					var result = await httpClient.GetAsync(url);
-					var responseText = await result.Content.ReadAsStringAsync();
-					//Serialize the json object to our c# classes
-					var rootObject = JsonConvert.DeserializeObject<RootObject>(responseText);
-
-					foreach (var currency in rootObject.rates)
+					var url = _baseUrl + "latest?base=USD";
+					using (var httpClient = CreateClient())
 					{
-						currencyList.Add(new Currency
+						var result = await httpClient.GetAsync(url);
+						var responseText = await result.Content.ReadAsStringAsync();
+						//Serialize the json object to our c# classes
+						var rootObject = JsonConvert.DeserializeObject<RootObject>(responseText);
+
+						foreach (var currency in rootObject.rates)
 						{
-							Name = currency.Key,
-							Rate = currency.Value
-						});
+							currenciesList.Add(new Currency
+							{
+								Name = currency.Key,
+								Rate = currency.Value
+							});
+						}
 					}
 				}
-				//}
 			}
 			catch (Exception ex)
 			{
-				//In case something we have a problem...
+				//In case we have a problem...
 				Console.WriteLine("Whooops! " + ex.Message);
 			}
-			return currencyList;
+			return currenciesList;
+		}
+
+		public static async Task<bool> CheckNetworkConnection()
+		{
+			if (!CrossConnectivity.Current.IsConnected)
+			{
+				return false;
+			}
+
+			if (!await CrossConnectivity.Current.IsRemoteReachable("https://www.google.com"))
+			{
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

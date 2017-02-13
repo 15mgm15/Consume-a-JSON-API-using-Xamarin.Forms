@@ -58,7 +58,7 @@ namespace SayUSDollar.ViewModel
 		async Task<List<Currency>> PopulateList()
 		{
 			IsBusy = true;
-			_currencyList = await WebApi.Instance.GetCurrenciesAsync();
+			_currencyList = await DataLayer.Instance.GetRemoteOrLocalCurrenciesAsync();
 			IsBusy = false;
 			return _currencyList;
 		}
