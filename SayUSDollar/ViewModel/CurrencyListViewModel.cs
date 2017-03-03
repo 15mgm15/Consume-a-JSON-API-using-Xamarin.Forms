@@ -13,6 +13,7 @@ namespace SayUSDollar.ViewModel
 		public CurrencyListViewModel()
 		{
 			_currencyList = new List<Currency>();
+			_refreshCommand = new Command(RefreshList);
 
 			//Since we are going to do UI changes we should do it on the UI Thread!
 			Device.BeginInvokeOnMainThread(async () =>
@@ -23,6 +24,11 @@ namespace SayUSDollar.ViewModel
 			//{
 			//	await PopulateList();
 			//});
+		}
+
+		async void RefreshList()
+		{
+			CurrencyList = await PopulateList();	
 		}
 
 		#region Properties
@@ -48,6 +54,16 @@ namespace SayUSDollar.ViewModel
 			{
 				_currencyList = value;
 				OnPropertyChanged(nameof(CurrencyList));
+			}
+		}
+
+		//Refresh command
+		Command _refreshCommand;
+		public Command RefreshCommand
+		{
+			get
+			{
+				return _refreshCommand;
 			}
 		}
 

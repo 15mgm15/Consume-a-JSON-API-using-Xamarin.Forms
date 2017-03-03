@@ -8,7 +8,12 @@ namespace SayUSDollar
 		public SayUSDollarPage()
 		{
 			InitializeComponent();
-			BindingContext = new CurrencyListViewModel();
+			var currencyViewModel = new CurrencyListViewModel();
+			BindingContext = currencyViewModel;
+
+			CurrencyList.IsPullToRefreshEnabled = true;
+			CurrencyList.RefreshCommand = currencyViewModel.RefreshCommand;
+			CurrencyList.SetBinding(ListView.IsRefreshingProperty, nameof(currencyViewModel.IsBusy));
 
 			CurrencyList.ItemTapped += (sender, e) =>
 			{

@@ -6,12 +6,13 @@
 		Title="1 US Dollar">
 	<StackLayout>
 		<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-		<ListView x:Name="CurrencyList" ItemsSource="{Binding CurrencyList}">
+		<ListView x:Name="CurrencyList" ItemsSource="{Binding CurrencyList}" 
+				IsPullToRefreshEnabled="true" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy}">
 			<ListView.ItemTemplate>
 			    <DataTemplate>
 			        <TextCell Text="{Binding Name}" Detail="{Binding Rate}" />
 			    </DataTemplate>
 		  </ListView.ItemTemplate>
 		</ListView>
-	</StackLayout> 
+	</StackLayout>
 </ContentPage>
