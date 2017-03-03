@@ -26,10 +26,10 @@ namespace SayUSDollar.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::SayUSDollar.Droid.Resource.Attribute.actionBarSize;
 			global::ModernHttpClient.Resource.String.library_name = global::SayUSDollar.Droid.Resource.String.library_name;
 			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::SayUSDollar.Droid.Resource.String.ApplicationName;
 			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::SayUSDollar.Droid.Resource.String.Hello;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::SayUSDollar.Droid.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation
