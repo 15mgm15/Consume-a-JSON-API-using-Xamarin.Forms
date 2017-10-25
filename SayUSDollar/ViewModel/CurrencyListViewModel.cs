@@ -9,75 +9,82 @@ namespace SayUSDollar.ViewModel
 {
 	public class CurrencyListViewModel : INotifyPropertyChanged
 	{
+        #region Properties
+
+        //To let the user know that we are working on something
+        bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged(nameof(IsBusy));
+            }
+        }
+
+        bool _isRefreshing;
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                _isRefreshing = value;
+                OnPropertyChanged(nameof(IsRefreshing));
+            }
+        }
+
+        //Our list of objects!
+        List<Currency> _currencyList;
+        public List<Currency> CurrencyList
+        {
+            get { return _currencyList; }
+            set
+            {
+                _currencyList = value;
+                OnPropertyChanged(nameof(CurrencyList));
+            }
+        }
+
+        //Refresh command
+        Command _refreshCommand;
+        public Command RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand;
+            }
+        }
+
+        #endregion
 		
 		public CurrencyListViewModel()
 		{
 			_currencyList = new List<Currency>();
-			_refreshCommand = new Command(RefreshList);
+			_refreshCommand = new Command(async () => await RefreshList());
 
-			//Since we are going to do UI changes we should do it on the UI Thread!
-			Device.BeginInvokeOnMainThread(async () =>
+			Task.Run(async () =>
 			{
-				CurrencyList = await PopulateList();	
+                IsBusy = true;
+                CurrencyList = await PopulateList();
+                IsBusy = false;
 			});
-			//Task.Run(async () =>
-			//{
-			//	await PopulateList();
-			//});
 		}
-
-		async void RefreshList()
-		{
-			CurrencyList = await PopulateList();	
-		}
-
-		#region Properties
-
-		//To let the user know that we are working on something
-		bool _isBusy;
-		public bool IsBusy
-		{
-			get { return _isBusy; }
-			set
-			{
-				_isBusy = value;
-				OnPropertyChanged(nameof(IsBusy));
-			}
-		}
-
-		//Our list of objects!
-		List<Currency> _currencyList;
-		public List<Currency> CurrencyList
-		{
-			get { return _currencyList; }
-			set
-			{
-				_currencyList = value;
-				OnPropertyChanged(nameof(CurrencyList));
-			}
-		}
-
-		//Refresh command
-		Command _refreshCommand;
-		public Command RefreshCommand
-		{
-			get
-			{
-				return _refreshCommand;
-			}
-		}
-
-		#endregion
 
 		#region Methods
 
 		async Task<List<Currency>> PopulateList()
 		{
-			IsBusy = true;
-			_currencyList = await DataLayer.Instance.GetRemoteOrLocalCurrenciesAsync();
-			IsBusy = false;
+            _currencyList = await DataLayer.Instance.GetRemoteOrLocalCurrenciesAsync().ConfigureAwait(false);
 			return _currencyList;
 		}
+
+        async Task RefreshList()
+        {
+            IsRefreshing = true;
+            CurrencyList = await PopulateList();
+            IsRefreshing = false;
+        }
 
 		#endregion
 

@@ -13,7 +13,6 @@ namespace SayUSDollar
 
 			CurrencyList.IsPullToRefreshEnabled = true;
 			CurrencyList.RefreshCommand = currencyViewModel.RefreshCommand;
-			CurrencyList.SetBinding(ListView.IsRefreshingProperty, nameof(currencyViewModel.IsBusy));
 
 			CurrencyList.ItemTapped += (sender, e) =>
 			{

@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
 		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-		xmlns:local="clr-namespace:SayUSDollar" 
+		xmlns:local="clr-namespace:SayUSDollar"
 		x:Class="SayUSDollar.SayUSDollarPage"
 		Title="1 US Dollar">
 	<StackLayout>
-		<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-		<ListView x:Name="CurrencyList" ItemsSource="{Binding CurrencyList}" 
-				IsPullToRefreshEnabled="true" RefreshCommand="{Binding RefreshCommand}" IsRefreshing="{Binding IsBusy}">
+		<ActivityIndicator
+            Margin="2"
+            WidthRequest="25"
+            HeightRequest="25"
+            IsVisible="{Binding IsBusy}"
+            IsRunning="{Binding IsBusy}" />
+		<ListView
+            x:Name="CurrencyList"
+            ItemsSource="{Binding CurrencyList}"
+            IsPullToRefreshEnabled="true"
+            RefreshCommand="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
 			<ListView.ItemTemplate>
 			    <DataTemplate>
 			        <TextCell Text="{Binding Name}" Detail="{Binding Rate}" />

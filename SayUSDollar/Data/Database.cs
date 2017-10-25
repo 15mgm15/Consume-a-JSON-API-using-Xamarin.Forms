@@ -2,12 +2,9 @@
 using System.IO;
 using SQLite.Net;
 using SQLite.Net.Interop;
-
-using SQLiteNetExtensions.Attributes;
 using SQLiteNetExtensions.Extensions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using SayUSDollar.Model;
 
